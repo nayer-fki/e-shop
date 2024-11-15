@@ -1,0 +1,32 @@
+# Node.js (backend et webapp)
+backend/node_modules/
+webapp/node_modules/
+
+# Autres fichiers ou répertoires inutiles à versionner
+/backend/package-lock.json
+/webapp/package-lock.json
+
+# IDEs et éditeurs
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Logs
+/backend/logs/
+/webapp/logs/
+
+# Système de fichiers
+.DS_Store
+Thumbs.db
