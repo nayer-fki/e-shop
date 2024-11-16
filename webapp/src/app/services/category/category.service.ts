@@ -1,7 +1,7 @@
 import { H } from '@angular/cdk/keycodes';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Category } from '../types/category';
+import { Category } from '../../types/category';
 
 @Injectable({
   providedIn: 'root'

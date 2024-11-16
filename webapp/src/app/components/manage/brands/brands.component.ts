@@ -8,14 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CategoryService } from '../../../services/category/category.service';
+import { BrandService } from '../../../services/brand/brand.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';  // Import CommonModule
 import { NgClass } from '@angular/common';  // Import NgClass
-import { Category } from '../../../types/category';
+import { Brand } from '../../../types/brand';
 
 @Component({
-  selector: 'app-categories',
+  selector: 'app-brands',
   standalone: true,
   imports: [
     CommonModule,  // Ajouter CommonModule
@@ -30,12 +30,12 @@ import { Category } from '../../../types/category';
     MatCardModule,
     RouterLink
   ],
-  templateUrl: './categories.component.html',
-  styleUrl: './categories.component.scss'
+  templateUrl: './brands.component.html',
+  styleUrl: './brands.component.scss'
 })
-export class CategoriesComponent {
+export class BrandsComponent {
   displayedColumns: string[] = ['id', 'name', 'action'];
-  dataSource: MatTableDataSource<Category>;
+  dataSource: MatTableDataSource<Brand>;
 
   alertMessage: string | null = null; // Message d'alerte
   alertType: 'success' | 'error' | null = null; // Type d'alerte (succès ou erreur)
@@ -43,7 +43,7 @@ export class CategoriesComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  categoryService = inject(CategoryService);
+  brandService = inject(BrandService);
 
   constructor() {
     this.dataSource = new MatTableDataSource([] as any);
@@ -54,7 +54,7 @@ export class CategoriesComponent {
   }
 
   private getServerData() {
-    this.categoryService.getCategories().subscribe((result: any) => {
+    this.brandService.getBrands().subscribe((result: any) => {
       console.log(result);
       this.dataSource.data = result;
     });
@@ -75,17 +75,17 @@ export class CategoriesComponent {
   }
 
   delete(id: string) {
-    const confirmation = confirm("Are you sure you want to delete this category?");
+    const confirmation = confirm("Are you sure you want to delete this brand?");
     if (confirmation) {
-      this.categoryService.deleteCategoryById(id).subscribe({
+      this.brandService.deleteBrandById(id).subscribe({
         next: () => {
-          this.alertMessage = "Category successfully deleted.";
+          this.alertMessage = "brand successfully deleted.";
           this.alertType = 'success';
           this.getServerData(); // Rafraîchissement après suppression
         },
         error: (err: any) => {
-          console.error("Error deleting category:", err);
-          this.alertMessage = "Failed to delete the category.";
+          console.error("Error deleting brand:", err);
+          this.alertMessage = "Failed to delete the brand.";
           this.alertType = 'error';
         }
       });

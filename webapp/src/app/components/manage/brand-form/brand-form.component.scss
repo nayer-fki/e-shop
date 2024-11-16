@@ -1,0 +1,59 @@
+.form-container {
+    max-width: 600px; /* Augmenter la largeur maximale */
+    margin: 100px auto; /* Centrer verticalement et horizontalement */
+    padding: 30px; /* Augmenter le padding pour plus d'espace */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); /* Augmenter l'ombre pour plus de profondeur */
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* Ajouter un fond blanc pour plus de contraste */
+  }
+  
+  .form-title {
+    font-size: 32px; /* Augmenter la taille du titre */
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px; /* Augmenter l'espace sous le titre */
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 15px; /* Augmenter le padding pour un champ de saisie plus grand */
+    margin-bottom: 20px; /* Espacement plus grand entre les champs */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px; /* Augmenter la taille de la police pour plus de visibilité */
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 15px; /* Augmenter le padding pour un bouton plus grand */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px; /* Augmenter la taille du texte du bouton */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .submit-button:hover:enabled {
+    background-color: #0056b3;
+  }
+  
+  .alert {
+    margin-top: 20px; /* Espacement plus grand en haut */
+    padding: 15px; /* Plus de padding pour une meilleure visibilité */
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px; /* Augmenter la taille de la police pour le message d'alerte */
+  }
+  

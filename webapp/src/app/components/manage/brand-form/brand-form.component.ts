@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { CategoryService } from '../../../services/category/category.service';
+import { BrandService } from '../../../services/brand/brand.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-category-form',
+  selector: 'app-brand-form',
   standalone: true,
   imports: [
     CommonModule, // Importation de CommonModule pour *ngIf
@@ -17,16 +17,16 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatButtonModule,
     MatCardModule
   ],
-  templateUrl: './category-form.component.html',
-  styleUrls: ['./category-form.component.scss']
+  templateUrl: './brand-form.component.html',
+  styleUrls: ['./brand-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit {
+export class BrandFormComponent implements OnInit {
   name!: string;
   isEdit = false;
   id!: string;
   alertMessage: string = ''; // Ajout de la propriété
 
-  categoryService = inject(CategoryService);
+  brandService = inject(BrandService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
@@ -34,50 +34,50 @@ export class CategoryFormComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     if (this.id) {
       this.isEdit = true;
-      this.loadCategory();
+      this.loadbrand();
     }
   }
 
-  private loadCategory() {
-    this.categoryService.getCategoryById(this.id).subscribe({
+  private loadbrand() {
+    this.brandService.getBrandById(this.id).subscribe({
       next: (result: any) => {
         this.name = result.name;
       },
       error: () => {
-        this.alertMessage = 'Failed to load category details.';
-        this.router.navigateByUrl('/admin/categories');
+        this.alertMessage = 'Failed to load brand details.';
+        this.router.navigateByUrl('/admin/brands');
       }
     });
   }
 
   add() {
     if (!this.name.trim()) {
-      this.alertMessage = 'Please enter a valid category name.';
+      this.alertMessage = 'Please enter a valid brand name.';
       return;
     }
-    this.categoryService.addcategory(this.name).subscribe({
+    this.brandService.addBrand(this.name).subscribe({
       next: () => {
-        this.alertMessage = 'Category added successfully.';
-        setTimeout(() => this.router.navigateByUrl('/admin/categories'), 2000);
+        this.alertMessage = 'brand added successfully.';
+        setTimeout(() => this.router.navigateByUrl('/admin/brands'), 2000);
       },
       error: () => {
-        this.alertMessage = 'Failed to add category.';
+        this.alertMessage = 'Failed to add brand.';
       }
     });
   }
 
   update() {
     if (!this.name.trim()) {
-      this.alertMessage = 'Please enter a valid category name.';
+      this.alertMessage = 'Please enter a valid brand name.';
       return;
     }
-    this.categoryService.updatecategory(this.id, this.name).subscribe({
+    this.brandService.updateBrand(this.id, this.name).subscribe({
       next: () => {
-        this.alertMessage = 'Category updated successfully.';
-        setTimeout(() => this.router.navigateByUrl('/admin/categories'), 2000);
+        this.alertMessage = 'brand updated successfully.';
+        setTimeout(() => this.router.navigateByUrl('/admin/brands'), 2000);
       },
       error: () => {
-        this.alertMessage = 'Failed to update category.';
+        this.alertMessage = 'Failed to update brand.';
       }
     });
   }

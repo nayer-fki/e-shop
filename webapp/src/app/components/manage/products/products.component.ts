@@ -1,4 +1,5 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { inject, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -8,14 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CategoryService } from '../../../services/category/category.service';
+import { ProductService } from '../../../services/product/product.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';  // Import CommonModule
 import { NgClass } from '@angular/common';  // Import NgClass
-import { Category } from '../../../types/category';
+import { Product } from '../../../types/product';
+
 
 @Component({
-  selector: 'app-categories',
+  selector: 'app-products',
   standalone: true,
   imports: [
     CommonModule,  // Ajouter CommonModule
@@ -30,12 +32,13 @@ import { Category } from '../../../types/category';
     MatCardModule,
     RouterLink
   ],
-  templateUrl: './categories.component.html',
-  styleUrl: './categories.component.scss'
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.scss'
 })
-export class CategoriesComponent {
-  displayedColumns: string[] = ['id', 'name', 'action'];
-  dataSource: MatTableDataSource<Category>;
+export class ProductsComponent {
+  displayedColumns: string[] = ['id', 'name', 'price', 'discount', 'category', 'image', 'action'];
+
+  dataSource: MatTableDataSource<Product>;
 
   alertMessage: string | null = null; // Message d'alerte
   alertType: 'success' | 'error' | null = null; // Type d'alerte (succès ou erreur)
@@ -43,7 +46,7 @@ export class CategoriesComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  categoryService = inject(CategoryService);
+  productService = inject(ProductService);
 
   constructor() {
     this.dataSource = new MatTableDataSource([] as any);
@@ -54,7 +57,7 @@ export class CategoriesComponent {
   }
 
   private getServerData() {
-    this.categoryService.getCategories().subscribe((result: any) => {
+    this.productService.getProducts().subscribe((result: any) => {
       console.log(result);
       this.dataSource.data = result;
     });
@@ -75,17 +78,17 @@ export class CategoriesComponent {
   }
 
   delete(id: string) {
-    const confirmation = confirm("Are you sure you want to delete this category?");
+    const confirmation = confirm("Are you sure you want to delete this product?");
     if (confirmation) {
-      this.categoryService.deleteCategoryById(id).subscribe({
+      this.productService.deleteProductById(id).subscribe({
         next: () => {
-          this.alertMessage = "Category successfully deleted.";
+          this.alertMessage = "product successfully deleted.";
           this.alertType = 'success';
           this.getServerData(); // Rafraîchissement après suppression
         },
         error: (err: any) => {
-          console.error("Error deleting category:", err);
-          this.alertMessage = "Failed to delete the category.";
+          console.error("Error deleting product:", err);
+          this.alertMessage = "Failed to delete the product.";
           this.alertType = 'error';
         }
       });
@@ -100,4 +103,5 @@ export class CategoriesComponent {
       this.alertType = null;
     }, 3000);
   }
+
 }

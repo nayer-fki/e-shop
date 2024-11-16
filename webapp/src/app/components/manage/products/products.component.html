@@ -1,0 +1,91 @@
+<mat-card class="m-8">
+    <!-- Message d'alerte -->
+    <div *ngIf="alertMessage" class="alert" [ngClass]="alertType">
+      {{ alertMessage }}
+    </div>
+  
+    <!-- Header with Title and Button Aligned Opposite -->
+    <mat-card-header>
+      <div class="header-container">
+        <h1 class="title">Manage Product</h1>
+        <button mat-raised-button color="primary" class="add-button" routerLink="/admin/products/add">Add New Products</button>
+      </div>
+    </mat-card-header>
+  
+    <!-- Card Content -->
+    <mat-card-content>
+      <div class="content-container">
+        <!-- Filter Input Field -->
+        <mat-form-field class="filter-input">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search Products" #input />
+        </mat-form-field>
+  
+        <!-- Products Table -->
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let row">{{ row._id }}</td>
+          </ng-container>
+  
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+  
+          <!-- Price Column -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+            <td mat-cell *matCellDef="let row">{{ row.price | currency }}</td>
+          </ng-container>
+  
+          <!-- Discount Column -->
+          <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Discount</th>
+            <td mat-cell *matCellDef="let row">{{ row.discount || 'N/A' }}%</td>
+          </ng-container>
+  
+          <!-- Category Column -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let row">{{ row.categoryId?.name || 'N/A' }}</td>
+          </ng-container>
+  
+          <!-- Image Column -->
+          <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+            <td mat-cell *matCellDef="let row">
+              <img *ngIf="row.image" [src]="row.image" alt="Product Image" class="product-image" />
+              <span *ngIf="!row.image">No image</span>
+            </td>
+          </ng-container>
+  
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="action-buttons">
+                <button mat-raised-button color="accent" [routerLink]="'/admin/products/' + row._id">Edit</button>
+                <button mat-raised-button color="warn" (click)="delete(row._id)">Delete</button>
+              </div>
+            </td>
+          </ng-container>
+  
+          <!-- Table Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+          <!-- No Data Row -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="7">No data matching the filter "{{ input.value }}"</td>
+          </tr>
+        </table>
+  
+        <!-- Paginator -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of products"></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  

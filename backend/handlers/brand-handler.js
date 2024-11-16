@@ -3,19 +3,28 @@ const mongoose = require('mongoose');
 
 
 async function addBrand(model) {
-    // Create a new instance of the brand model
+    // Vérifiez si une marque avec le même nom existe déjà
+    const existingBrand = await Brand.findOne({ name: model.name });
+
+    if (existingBrand) {
+        // Si la marque existe déjà, renvoyez un message d'erreur
+        throw new Error("Brand already exists");
+    }
+
+    // Créez une nouvelle instance du modèle de la marque si elle n'existe pas
     let brand = new Brand({
         name: model.name,
     });
 
-    // Save the brand in the database
+    // Sauvegardez la marque dans la base de données
     try {
         await brand.save();
-        return brand.toObject();  // Return the saved brand object
+        return brand.toObject();  // Retourner l'objet de la marque sauvegardée
     } catch (err) {
-        throw new Error("Error creating brand");  // Throw an error
+        throw new Error("Error creating brand");  // Lancer une erreur en cas d'échec
     }
 }
+
 
 
 // brands 

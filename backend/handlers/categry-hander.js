@@ -7,23 +7,32 @@ const mongoose = require('mongoose');  // Add mongoose import
 async function addCategory(model) {
     // Validate that model.name exists and is a string
     if (!model.name || typeof model.name !== 'string') {
-      throw new Error("Category name is required and should be a non-empty string");
+        throw new Error("Category name is required and should be a non-empty string");
     }
-  
+
+    // Vérifiez si une catégorie avec le même nom existe déjà
+    const existingCategory = await CategoryModel.findOne({ name: model.name.trim() });
+
+    if (existingCategory) {
+        // Si la catégorie existe déjà, renvoyez un message d'erreur
+        throw new Error("Category already exists");
+    }
+
     // Create a new instance of the Category model with the trimmed name
     let category = new CategoryModel({
-      name: model.name.trim(),  // Apply trim only if model.name is a valid string
+        name: model.name.trim(),  // Apply trim only if model.name is a valid string
     });
-  
+
     try {
-      // Save the category in the database
-      await category.save();
-      return category.toObject();  // Return the saved category object
+        // Save the category in the database
+        await category.save();
+        return category.toObject();  // Return the saved category object
     } catch (err) {
-      // Handle other errors (such as database issues)
-      throw new Error("Error creating category");
+        // Handle other errors (such as database issues)
+        throw new Error("Error creating category");
     }
-  }
+}
+
   
   
 
