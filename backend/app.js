@@ -1,48 +1,40 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 const app = express();
-const mongoose=require("mongoose");
-const cors = require("cors");
-const port=3000;
+const port = 3000;
 
-
-//app router declaration
+// Import routes
 const categoryRouter = require("./routes/category");
-const BrandRouter = require("./routes/brand");
-const ProductRouter = require("./routes/product")
+const brandRouter = require("./routes/brand");
+const productRouter = require("./routes/product");
+const uploadRoutes = require('./routes/upload'); 
+const userRouter = require("./routes/userRoutes"); // Import user routes
+const authRoutes = require("./routes/authRoutes");
 
-//database declaration
-const Brand = require('./db/brand');
-const Product = require('./db/product');
+// Database connection
+const conncetdb = async () => {
+    await mongoose.connect("mongodb://localhost:27017", { dbName: "e-comm-store-db" });
+    console.log("MongoDB connected");
+};
 
-
+conncetdb().catch(err => console.log(err));
 
 app.use(cors());
 app.use(express.json());
-app.get("/", (req, res)=>{
+app.use("/category", categoryRouter);
+app.use("/brand", brandRouter);
+app.use("/product", productRouter);
+app.use(express.json());
+app.use('/uploads', express.static('uploads')); // Serve uploaded files
+app.use('/upload', uploadRoutes);
+app.use("/users", userRouter);
+app.use("/auth", authRoutes);
+// Home route
+app.get("/", (req, res) => {
     res.send("Server running");
 });
 
-
-
-
-
-//router of app
-app.use("/category",categoryRouter);
-app.use("/brand",BrandRouter);
-app.use("/product",ProductRouter)
-
-async function conncetdb() {
-    await mongoose.connect("mongodb://localhost:27017",{
-         dbName:"e-comm-store-db"
-    }); 
-    console.log("mongodb connected");
-}
-
-conncetdb().catch((err)=>{
-    console.log(err);
-})
-
-
-app.listen(port,()=>{
-    console.log(`server is running on port ${port}`);
-})
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});

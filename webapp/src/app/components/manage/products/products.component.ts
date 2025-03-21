@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { inject, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -11,16 +10,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ProductService } from '../../../services/product/product.service';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';  // Import CommonModule
-import { NgClass } from '@angular/common';  // Import NgClass
+import { CommonModule, NgClass } from '@angular/common'; // Combined imports
 import { Product } from '../../../types/product';
-
+import { ProductPopupComponent } from '../product-popup/product-popup.component'; 
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-products',
   standalone: true,
   imports: [
-    CommonModule,  // Ajouter CommonModule
+    CommonModule,
+    NgClass,
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
@@ -30,18 +30,17 @@ import { Product } from '../../../types/product';
     MatMenuModule,
     MatButtonModule,
     MatCardModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent {
   displayedColumns: string[] = ['id', 'name', 'price', 'discount', 'category', 'image', 'action'];
-
   dataSource: MatTableDataSource<Product>;
-
-  alertMessage: string | null = null; // Message d'alerte
-  alertType: 'success' | 'error' | null = null; // Type d'alerte (succès ou erreur)
+  alertMessage: string | null = null;
+  alertType: 'success' | 'error' | null = null;
+  selectedProduct: Product | null = null; // Stores the product for popup display
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -49,7 +48,7 @@ export class ProductsComponent {
   productService = inject(ProductService);
 
   constructor() {
-    this.dataSource = new MatTableDataSource([] as any);
+    this.dataSource = new MatTableDataSource([] as Product[]);
   }
 
   ngOnInit() {
@@ -57,9 +56,13 @@ export class ProductsComponent {
   }
 
   private getServerData() {
-    this.productService.getProducts().subscribe((result: any) => {
-      console.log(result);
-      this.dataSource.data = result;
+    this.productService.getProducts().subscribe({
+      next: (result: Product[]) => {
+        this.dataSource.data = result;
+      },
+      error: (err: any) => {
+        console.error('Error fetching products:', err);
+      },
     });
   }
 
@@ -78,30 +81,38 @@ export class ProductsComponent {
   }
 
   delete(id: string) {
-    const confirmation = confirm("Are you sure you want to delete this product?");
-    if (confirmation) {
+    if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProductById(id).subscribe({
         next: () => {
-          this.alertMessage = "product successfully deleted.";
+          this.alertMessage = 'Product successfully deleted.';
           this.alertType = 'success';
-          this.getServerData(); // Rafraîchissement après suppression
+          this.getServerData(); // Refresh data
         },
         error: (err: any) => {
-          console.error("Error deleting product:", err);
-          this.alertMessage = "Failed to delete the product.";
+          console.error('Error deleting product:', err);
+          this.alertMessage = 'Failed to delete the product.';
           this.alertType = 'error';
-        }
+        },
       });
-    } else {
-      this.alertMessage = "Deletion cancelled.";
-      this.alertType = 'error';
-    }
 
-    // Effacer le message d'alerte après 3 secondes
-    setTimeout(() => {
-      this.alertMessage = null;
-      this.alertType = null;
-    }, 3000);
+      setTimeout(() => {
+        this.alertMessage = null;
+        this.alertType = null;
+      }, 2000);
+    }
   }
 
+  openProductPopup(product: Product) {
+    this.selectedProduct = product;
+    // Logic to open the popup
+    const popup = document.getElementById('product-popup');
+    if (popup) popup.style.display = 'block';
+  }
+
+  closeProductPopup() {
+    this.selectedProduct = null;
+    // Logic to close the popup
+    const popup = document.getElementById('product-popup');
+    if (popup) popup.style.display = 'none';
+  }
 }

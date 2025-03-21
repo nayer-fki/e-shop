@@ -1,0 +1,32 @@
+<div class="edit-profile-container">
+    <form [formGroup]="userProfileForm" (ngSubmit)="updateUserProfile()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" type="text" class="form-control" />
+        <div *ngIf="userProfileForm.controls['name'].invalid && userProfileForm.controls['name'].touched">
+          <span class="error">Name is required</span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" type="email" class="form-control" />
+        <div *ngIf="userProfileForm.controls['email'].invalid && userProfileForm.controls['email'].touched">
+          <span class="error">Enter a valid email</span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="image">Image URL</label>
+        <input id="image" formControlName="image" type="text" class="form-control" />
+      </div>
+  
+      <!-- Display Error Message if any -->
+      <div *ngIf="errorMessage" class="error-message">
+        <span>{{ errorMessage }}</span>
+      </div>
+  
+      <button type="submit" [disabled]="userProfileForm.invalid" class="btn btn-primary">Update Profile</button>
+    </form>
+  </div>
+  

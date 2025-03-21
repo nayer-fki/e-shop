@@ -58,7 +58,7 @@ export class CategoryFormComponent implements OnInit {
     this.categoryService.addcategory(this.name).subscribe({
       next: () => {
         this.alertMessage = 'Category added successfully.';
-        setTimeout(() => this.router.navigateByUrl('/admin/categories'), 2000);
+        setTimeout(() => this.router.navigateByUrl('/admin/categories'), 1000);
       },
       error: () => {
         this.alertMessage = 'Failed to add category.';
@@ -74,7 +74,7 @@ export class CategoryFormComponent implements OnInit {
     this.categoryService.updatecategory(this.id, this.name).subscribe({
       next: () => {
         this.alertMessage = 'Category updated successfully.';
-        setTimeout(() => this.router.navigateByUrl('/admin/categories'), 2000);
+        setTimeout(() => this.router.navigateByUrl('/admin/categories'), 1000);
       },
       error: () => {
         this.alertMessage = 'Failed to update category.';

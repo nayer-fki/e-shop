@@ -1,0 +1,41 @@
+<mat-card>
+  <h2>Update User Details</h2>
+
+  <!-- Alert Message -->
+  <div *ngIf="alertMessage" [ngClass]="{'alert-success': alertMessageType === 'success', 'alert-error': alertMessageType === 'error'}">
+    {{ alertMessage }}
+  </div>
+
+  <!-- Loading Spinner -->
+  <mat-progress-spinner *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+  <!-- User Form -->
+  <form (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <!-- Name Input -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="user.name" name="name" required />
+    </mat-form-field>
+
+    <!-- Email Input -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="user.email" name="email" required type="email" />
+    </mat-form-field>
+
+    <!-- Admin Checkbox -->
+    <mat-checkbox [(ngModel)]="user.isAdmin" name="isAdmin">Is Admin</mat-checkbox>
+
+    <!-- Image URL Input -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Image URL</mat-label>
+      <input matInput [(ngModel)]="user.image" name="image" />
+    </mat-form-field>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit">Update User</button>
+      <button mat-raised-button color="warn" type="button" (click)="navigateToAdmin()">Cancel</button>
+    </div>
+  </form>
+</mat-card>

@@ -15,10 +15,10 @@ import { ActivatedRoute, Router } from '@angular/router';
     FormsModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
   ],
   templateUrl: './brand-form.component.html',
-  styleUrls: ['./brand-form.component.scss']
+  styleUrls: ['./brand-form.component.scss'],
 })
 export class BrandFormComponent implements OnInit {
   name!: string;
@@ -34,11 +34,11 @@ export class BrandFormComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     if (this.id) {
       this.isEdit = true;
-      this.loadbrand();
+      this.loadBrand();
     }
   }
 
-  private loadbrand() {
+  private loadBrand() {
     this.brandService.getBrandById(this.id).subscribe({
       next: (result: any) => {
         this.name = result.name;
@@ -46,7 +46,7 @@ export class BrandFormComponent implements OnInit {
       error: () => {
         this.alertMessage = 'Failed to load brand details.';
         this.router.navigateByUrl('/admin/brands');
-      }
+      },
     });
   }
 
@@ -57,12 +57,12 @@ export class BrandFormComponent implements OnInit {
     }
     this.brandService.addBrand(this.name).subscribe({
       next: () => {
-        this.alertMessage = 'brand added successfully.';
-        setTimeout(() => this.router.navigateByUrl('/admin/brands'), 2000);
+        this.alertMessage = 'Brand added successfully.';
+        setTimeout(() => this.router.navigateByUrl('/admin/brands'), 1000);
       },
       error: () => {
         this.alertMessage = 'Failed to add brand.';
-      }
+      },
     });
   }
 
@@ -73,15 +73,12 @@ export class BrandFormComponent implements OnInit {
     }
     this.brandService.updateBrand(this.id, this.name).subscribe({
       next: () => {
-        this.alertMessage = 'brand updated successfully.';
-        setTimeout(() => this.router.navigateByUrl('/admin/brands'), 2000);
+        this.alertMessage = 'Brand updated successfully.';
+        setTimeout(() => this.router.navigateByUrl('/admin/brands'), 1000);
       },
       error: () => {
         this.alertMessage = 'Failed to update brand.';
-      }
+      },
     });
   }
-
-
-
 }

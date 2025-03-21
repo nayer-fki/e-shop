@@ -1,1 +1,131 @@
-<p>product-form works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ isEdit ? 'Update Product' : 'Add New Product' }}</title>
+</head>
+<body>
+  <div class="form-container">
+    <h1 class="form-title">{{ isEdit ? 'Update Product' : 'Add New Product' }}</h1>
+    
+    <form (ngSubmit)="isEdit ? update() : add()" #productForm="ngForm">
+      <!-- Product Name -->
+      <input 
+        type="text" 
+        class="input-field" 
+        placeholder="Enter Product name" 
+        [(ngModel)]="product.name" 
+        name="name" 
+        required 
+      />
+      <div *ngIf="product.name && product.name.length < 5">
+        <small class="error">Product name must be at least 5 characters long.</small>
+      </div>
+
+      <!-- Short Description -->
+      <input 
+        type="text" 
+        class="input-field" 
+        placeholder="Enter Short Description" 
+        [(ngModel)]="product.shortDescription" 
+        name="shortDescription" 
+        required 
+      />
+      <div *ngIf="product.shortDescription && product.shortDescription.length < 10">
+        <small class="error">Short description must be at least 10 characters long.</small>
+      </div>
+
+      <!-- Description -->
+      <textarea 
+        class="textarea-field" 
+        placeholder="Enter Description" 
+        [(ngModel)]="product.description" 
+        name="description" 
+        required
+      ></textarea>
+      <div *ngIf="product.description && product.description.length < 50">
+        <small class="error">Description must be at least 50 characters long.</small>
+      </div>
+
+      <!-- Price -->
+      <input 
+        type="number" 
+        class="input-field" 
+        placeholder="Enter Price" 
+        [(ngModel)]="product.price" 
+        name="price" 
+        required 
+      />
+      <div *ngIf="product.price <= 0">
+        <small class="error">Price must be greater than 0.</small>
+      </div>
+
+      <!-- Discount -->
+      <input 
+        type="number" 
+        class="input-field" 
+        placeholder="Enter Discount (optional)" 
+        [(ngModel)]="product.discount" 
+        name="discount" 
+      />
+
+      <!-- Multiple Images -->
+      <div *ngFor="let img of product.images; let i = index">
+        <input 
+          type="text" 
+          class="input-field" 
+          placeholder="Enter Image URL" 
+          [(ngModel)]="product.images[i]" 
+          name="image-{{i}}" 
+          required 
+        />
+        <div *ngIf="product.images[i] && !isValidUrl(product.images[i])">
+          <small class="error">Please provide a valid image URL (starting with http or https).</small>
+        </div>
+
+        <!-- Delete Image Button -->
+        <button type="button" class="delete-image-btn" (click)="deleteImage(i)">Delete Image</button>
+      </div>
+
+      <!-- Add Another Image Button -->
+      <button type="button" class="add-image-btn" (click)="addImage()">Add Another Image</button>
+
+      <!-- Spacer Between Buttons and Category Select -->
+      <div class="spacer"></div>
+
+      <!-- Category -->
+      <select 
+        class="select-field" 
+        [(ngModel)]="product.categoryId" 
+        name="categoryId" 
+        required
+      >
+        <option value="" disabled>Select Category</option>
+        <option *ngFor="let category of categories" [value]="category._id">{{ category.name }}</option>
+      </select>
+      <div *ngIf="!product.categoryId">
+        <small class="error">Category is required.</small>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="submit-button" 
+        [disabled]="productForm.invalid || !areAllImagesValid()"
+      >
+        {{ isEdit ? 'Update' : 'Add' }}
+      </button>
+    </form>
+
+    <!-- Alert message -->
+    <div 
+      *ngIf="alertMessage" 
+      class="alert" 
+      [ngClass]="{ 'alert-success': alertMessageType === 'success', 'alert-error': alertMessageType === 'error' }"
+    >
+      {{ alertMessage }}
+    </div>
+  </div>
+</body>
+</html>

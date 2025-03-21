@@ -6,36 +6,65 @@ import { BrandsComponent } from './components/manage/brands/brands.component';
 import { BrandFormComponent } from './components/manage/brand-form/brand-form.component';
 import { ProductsComponent } from './components/manage/products/products.component';
 import { ProductFormComponent } from './components/manage/product-form/product-form.component';
+import { UpdateProductComponent } from './components/manage/update-product/update-product.component';
+import { ClientLayoutComponent } from './client-layout/client-layout.component';
+import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
+import { authGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/manage/dashboard/dashboard.component';
+import { UsersAdminComponent } from './components/manage/users-admin/users-admin.component';
+import { UserAdminFormComponent } from './components/manage/user-admin-form/user-admin-form.component';
+import { AdminUpdateComponent } from './components/manage/admin-update/admin-update.component';
+import { ClientsComponent } from './components/manage/clients/clients.component';
+import { EditProfileComponent } from './components/manage/edit-profile/edit-profile.component';
 
 export const routes: Routes = [
-    {
-        path: "", component: HomeComponent
-    },
-    {
-        path: "admin/categories", component: CategoriesComponent
-    },
-    {
-        path: "admin/categories/add", component: CategoryFormComponent
-    },
-    {
-        path: "admin/categories/:id", component: CategoryFormComponent
-    },
-    {
-        path: "admin/brands", component: BrandsComponent
-    },
-    {
-        path: "admin/brands/add", component: BrandFormComponent 
-    },
-    {
-        path: "admin/brands/:id", component: BrandFormComponent
-    },
-    {
-        path: "admin/products", component: ProductsComponent
-    },
-    {
-        path: "admin/products/add", component: ProductFormComponent
-    },
-    {
-        path: "admin/products/:id", component: ProductFormComponent
-    }
+  // Client Routes
+  {
+    path: '',
+    component: ClientLayoutComponent,
+    canActivate: [authGuard], // Protect client routes
+    children: [
+      { path: '', component: HomeComponent },
+      // Additional client routes can be added here
+    ],
+  },
+
+  // Admin Routes
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [AdminGuard], // Protect admin layout
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redirect to dashboard by default
+      { path: 'dashboard', component: DashboardComponent }, // Admin Dashboard
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'categories/add', component: CategoryFormComponent },
+      { path: 'categories/:id', component: CategoryFormComponent },
+      { path: 'brands', component: BrandsComponent },
+      { path: 'brands/add', component: BrandFormComponent },
+      { path: 'brands/:id', component: BrandFormComponent },
+      { path: 'products', component: ProductsComponent },
+      { path: 'products/add', component: ProductFormComponent },
+      { path: 'products/:id', component: UpdateProductComponent },
+      { path: 'admin-users', component: UsersAdminComponent },
+      { path: 'admin-users/add', component: UserAdminFormComponent },
+      { path: 'admin-users/:id', component: AdminUpdateComponent },
+      { path: 'admin-clients', component: ClientsComponent },
+      { path: 'profile', component: EditProfileComponent },
+    ],
+  },
+
+  // Admin Login Route (Public route)
+  {
+    path: 'admin/login',
+    component: LoginComponent, // Admin login page
+  },
+
+  // Wildcard Route for Unknown Paths
+  {
+    path: '**',
+    redirectTo: '', // Redirect to the home page by default
+  },
 ];

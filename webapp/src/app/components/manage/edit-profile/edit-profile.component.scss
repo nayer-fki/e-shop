@@ -1,0 +1,36 @@
+.edit-profile-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  input.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.2rem;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.9rem;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  

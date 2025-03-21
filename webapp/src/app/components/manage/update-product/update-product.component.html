@@ -1,0 +1,132 @@
+<div class="update-product-container">
+  <div *ngIf="alertMessage" class="alert" [ngClass]="alertMessageType">
+    {{ alertMessage }}
+  </div>
+
+  <form *ngIf="!loading" (ngSubmit)="update()" class="update-product-form">
+    <h2>Update Product</h2>
+
+    <div class="form-group">
+      <label for="name">Product Name:</label>
+      <input
+        id="name"
+        type="text"
+        class="input-field"
+        [(ngModel)]="product.name"
+        name="name"
+        placeholder="Enter product name"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input
+        id="price"
+        type="number"
+        class="input-field"
+        [(ngModel)]="product.price"
+        name="price"
+        placeholder="Enter product price"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category:</label>
+      <select
+        id="category"
+        class="input-field"
+        [(ngModel)]="product.categoryId"
+        name="categoryId"
+        required
+      >
+        <option *ngIf="isEdit" [value]="product.categoryId" disabled>
+          {{ getCategoryNameById(product.categoryId) || 'Current category' }}
+        </option>
+        <option *ngFor="let category of categories" [value]="category._id">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="images">Images:</label>
+      <div class="image-inputs">
+        <div *ngIf="product.images && product.images.length; else noImages">
+          <div
+            *ngFor="let imageUrl of product.images; let i = index"
+            class="image-group"
+          >
+            <input
+              type="text"
+              class="input-field"
+              [(ngModel)]="product.images[i]"
+              [name]="'image' + i"
+              placeholder="Enter image URL"
+              required
+            />
+            <button
+              type="button"
+              (click)="deleteImage(i)"
+              class="delete-button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+        <ng-template #noImages>
+          <p>No images available. Add one below.</p>
+        </ng-template>
+        <button
+          type="button"
+          (click)="addImage()"
+          class="add-image-button"
+        >
+          Add Image
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea
+        id="description"
+        class="input-field"
+        [(ngModel)]="product.description"
+        name="description"
+        placeholder="Enter product description"
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="shortDescription">Short Description:</label>
+      <textarea
+        id="shortDescription"
+        class="input-field"
+        [(ngModel)]="product.shortDescription"
+        name="shortDescription"
+        placeholder="Enter short description"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="discount">Discount (%):</label>
+      <input
+        id="discount"
+        type="number"
+        class="input-field"
+        [(ngModel)]="product.discount"
+        name="discount"
+        placeholder="Enter discount (optional)"
+      />
+    </div>
+
+    <button type="submit" class="submit-button">Update Product</button>
+  </form>
+
+  <div *ngIf="loading" class="loading-message">
+    <p>Loading...</p>
+  </div>
+</div>

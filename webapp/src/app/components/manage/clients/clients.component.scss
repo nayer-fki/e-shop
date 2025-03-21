@@ -1,0 +1,82 @@
+/* Header container */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 0; /* Vertical spacing */
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0; /* Remove unwanted margins */
+  }
+  
+  /* Action buttons */
+  .action-buttons {
+    display: flex;
+    gap: 12px; /* Slightly increased space between buttons */
+  }
+  
+  .action-buttons button {
+    padding: 6px 12px; /* Uniform button padding */
+    font-size: 0.85rem; /* Adjust button text size */
+  }
+  
+  .action-buttons button:first-child {
+    background-color: #1976d2; /* Color for Edit button */
+    color: #fff;
+  }
+  
+  .action-buttons button:last-child {
+    background-color: #d32f2f; /* Color for Delete button */
+    color: #fff;
+  }
+  
+  /* Table Styles */
+  table {
+    width: 100%;
+    border-spacing: 0; /* Remove spacing between rows */
+  }
+  
+  table th, table td {
+    padding: 16px; /* Add padding between the content and the cell borders */
+    text-align: left; /* Align text to the left */
+  }
+  
+  table th {
+    background-color: #f1f1f1; /* Light background for header */
+  }
+  
+  table tr {
+    background-color: #fff; /* White background for rows */
+    transition: background-color 0.2s ease-in-out; /* Smooth background color transition */
+  }
+  
+  table tr:hover {
+    background-color: #f5f5f5; /* Slightly gray on hover */
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd; /* Add bottom border to each cell for row separation */
+  }
+  
+  /* User Image Styling */
+  .user-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  mat-paginator {
+    margin-top: 16px;
+  }
+  .user-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image fits within the box */
+  }
+  

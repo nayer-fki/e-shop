@@ -1,0 +1,56 @@
+<div class="sidebar"> 
+  <!-- Logo Section -->
+  <div class="logo">
+    <h3>EshopsAll</h3>
+  </div>
+
+  <!-- Navigation Menu -->
+  <ul class="menu">
+    <li><a routerLink="/admin/dashboard" routerLinkActive="active" class="menu-item">
+      <i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    </li>
+    <li><a routerLink="/admin/brands" routerLinkActive="active" class="menu-item">
+      <i class="fas fa-cogs"></i> Brands</a>
+    </li>
+    <li><a routerLink="/admin/categories" routerLinkActive="active" class="menu-item">
+      <i class="fas fa-th"></i> Categories</a>
+    </li>
+    <li><a routerLink="/admin/products" routerLinkActive="active" class="menu-item">
+      <i class="fas fa-cube"></i> Products</a>
+    </li>
+    <li><a routerLink="/admin/messages" routerLinkActive="active" class="menu-item">
+      <i class="fas fa-comments"></i> Messages</a>
+    </li>
+    <li>
+      <a routerLink="/admin/admin-users" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-users"></i> Users  <!-- Changed icon to "fa-users" -->
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/admin-clients" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-user-friends"></i> Clients  <!-- Changed icon to "fa-user-friends" -->
+      </a>
+    </li>
+  </ul>
+
+  <!-- User Profile Section --> 
+  <div class="profile-section">
+    <div class="profile-info">
+      <i class="fas fa-user-circle"></i>
+      <span>Profile</span>
+    </div>
+    <ul class="profile-menu">
+      <li><a routerLink="/admin/profile" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-user-edit"></i> Edit Profile</a>
+      </li>
+      <li><a routerLink="/admin/settings" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-cogs"></i> Settings</a>
+      </li>
+      <li>
+        <a (click)="logout()" class="menu-item">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a> <!-- Call logout on click -->
+      </li>
+    </ul>
+  </div>
+</div>

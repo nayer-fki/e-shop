@@ -1,0 +1,23 @@
+.footer {
+  background: #242424;
+  color: #ddd;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+
+  .container a {
+    color: #ff7b54;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .container a:hover {
+    color: #ffcc29;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  animation: fadeIn 1.2s ease;
+}

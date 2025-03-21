@@ -98,6 +98,6 @@ export class BrandsComponent {
     setTimeout(() => {
       this.alertMessage = null;
       this.alertType = null;
-    }, 3000);
+    }, 2000);
   }
 }

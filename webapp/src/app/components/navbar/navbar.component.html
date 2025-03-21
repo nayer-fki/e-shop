@@ -1,0 +1,44 @@
+<div class="navbar">
+  <!-- Search Bar -->
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery" 
+      (keyup)="onSearch()" 
+      placeholder="Search anything here..."
+      class="search-input"
+      aria-label="Search bar"
+    />
+    <i class="search-icon fa fa-search" aria-hidden="true"></i>
+  </div>
+
+  <!-- Search Results Dropdown -->
+  <div *ngIf="searchQuery.trim() && searchResults.length > 0" class="search-results">
+    <ul>
+      <li *ngFor="let result of searchResults" (click)="selectResult(result)">
+        {{ result.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- No Search Results Message -->
+  <div *ngIf="searchQuery.trim() && searchResults.length === 0" class="no-results-message">
+    No results found for "{{ searchQuery }}"
+  </div>
+
+  <!-- Right Section (Profile and Notifications) -->
+  <div class="navbar-right">
+    <button class="icon-btn filter-btn" aria-label="Notification">
+      <i class="fa fa-bell" aria-hidden="true"></i>
+    </button>
+    <div class="profile">
+      <img
+        [src]="user.profileImage || 'https://img.freepik.com/vecteurs-libre/cercle-bleu-utilisateur-blanc_78370-4707.jpg'"
+        alt="Profile picture"
+        class="profile-img"
+        aria-label="User profile picture"
+      />
+      <span class="profile-name">{{ user.name }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+// General Form Container Styling
+mat-card {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+// Form Field Styling
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-checkbox {
+  margin: 8px 0;
+}
+
+// Submit Button Styling
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+
+  &.mat-primary {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:active {
+    background-color: #388e3c;
+  }
+}
+
+// Alert Message Styling
+.alert {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+
+  &.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  &.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+}
+
+// Responsive Design
+@media screen and (max-width: 768px) {
+  mat-card {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}

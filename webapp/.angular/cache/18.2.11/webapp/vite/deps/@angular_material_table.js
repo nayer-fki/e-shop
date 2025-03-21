@@ -7,19 +7,18 @@ import {
   _VIEW_REPEATER_STRATEGY,
   _ViewRepeaterOperation,
   isDataSource
-} from "./chunk-45N2Z4N6.js";
+} from "./chunk-RVVPTCOX.js";
 import {
   Directionality,
   MatCommonModule,
   Platform,
   _isNumberValue
-} from "./chunk-MYH7272H.js";
+} from "./chunk-VGG3ZJQ2.js";
 import {
   DOCUMENT
-} from "./chunk-I4XI7QIN.js";
+} from "./chunk-KU5SMRRM.js";
 import {
   Attribute,
-  BehaviorSubject,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -39,21 +38,14 @@ import {
   Optional,
   Output,
   SkipSelf,
-  Subject,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation$1,
   afterNextRender,
   booleanAttribute,
-  combineLatest,
   inject,
-  isObservable,
-  map,
-  merge,
-  of,
   setClassMetadata,
-  takeUntil,
   ɵɵInheritDefinitionFeature,
   ɵɵInputTransformsFeature,
   ɵɵNgOnChangesFeature,
@@ -87,7 +79,20 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-AJ4CF7QH.js";
+} from "./chunk-2MEGWWQ4.js";
+import {
+  isObservable,
+  merge
+} from "./chunk-LBBSG2YE.js";
+import "./chunk-WSXI74FV.js";
+import {
+  BehaviorSubject,
+  Subject,
+  combineLatest,
+  map,
+  of,
+  takeUntil
+} from "./chunk-NGNUV6BG.js";
 
 // node_modules/@angular/cdk/fesm2022/table.mjs
 var _c0 = [[["caption"]], [["colgroup"], ["col"]], "*"];
@@ -1664,9 +1669,8 @@ var CdkTable = class _CdkTable {
   /** Aria role to apply to the table's cells based on the table's own role. */
   _getCellRole() {
     if (this._cellRoleInternal === void 0) {
-      const role = this._elementRef.nativeElement.getAttribute("role");
-      const cellRole = role === "grid" || role === "treegrid" ? "gridcell" : "cell";
-      this._cellRoleInternal = this._isNativeHtmlTable && cellRole === "cell" ? null : cellRole;
+      const tableRole = this._elementRef.nativeElement.getAttribute("role");
+      return tableRole === "grid" || tableRole === "treegrid" ? "gridcell" : "cell";
     }
     return this._cellRoleInternal;
   }
@@ -2080,7 +2084,10 @@ var CdkTable = class _CdkTable {
    * re-render that section.
    */
   _renderUpdatedColumns() {
-    const columnsDiffReducer = (acc, def) => acc || !!def.getColumnsDiff();
+    const columnsDiffReducer = (acc, def) => {
+      const diff = !!def.getColumnsDiff();
+      return acc || diff;
+    };
     const dataColumnsChanged = this._rowDefs.reduce(columnsDiffReducer, false);
     if (dataColumnsChanged) {
       this._forceRenderDataRows();

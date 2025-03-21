@@ -1,0 +1,38 @@
+<mat-card>
+  <form (ngSubmit)="addUser()">
+    <!-- Name Field -->
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" [(ngModel)]="user.name" name="name" required />
+    </mat-form-field>
+
+    <!-- Email Field -->
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [(ngModel)]="user.email" name="email" required />
+    </mat-form-field>
+
+    <!-- Password Field -->
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="user.password" name="password" required />
+    </mat-form-field>
+
+    <!-- Admin Checkbox -->
+    <mat-checkbox [(ngModel)]="user.isAdmin" name="isAdmin">Admin</mat-checkbox>
+
+    <!-- Image URL Field -->
+    <mat-form-field appearance="fill">
+      <mat-label>Image URL</mat-label>
+      <input matInput type="text" [(ngModel)]="user.image" name="image" />
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <button mat-raised-button color="primary" type="submit">Add User</button>
+  </form>
+
+  <!-- Alert Message -->
+  <div *ngIf="alertMessage" class="alert" [ngClass]="alertMessageType">
+    {{ alertMessage }}
+  </div>
+</mat-card>
