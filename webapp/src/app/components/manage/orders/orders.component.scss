@@ -1,0 +1,182 @@
+/* Overall container styling */
+.orders-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Header Styling */
+.header {
+  font-size: 26px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Search Box and Action Button Container */
+.search-container, .action-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+/* Search Box Styling */
+.search-box {
+  padding: 12px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-box::placeholder {
+  color: #888;
+}
+
+/* Table Styling */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.orders-table th, .orders-table td {
+  padding: 15px;
+  text-align: left;
+}
+
+.orders-table th {
+  background-color: #444;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.orders-table td {
+  font-size: 14px;
+  color: #555;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+.orders-table tr:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+}
+
+/* Button Styling */
+button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: capitalize;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button.btn-action {
+  background-color: #4a90e2;
+  color: white;
+}
+
+button.btn-confirm {
+  background-color: #6bbf3a;
+  color: white;
+}
+
+button.btn-ship {
+  background-color: #9a9a9a;
+  color: white;
+}
+
+button.btn-action:hover {
+  background-color: #357ab7;
+}
+
+button.btn-confirm:hover {
+  background-color: #5fa832;
+}
+
+button.btn-ship:hover {
+  background-color: #808080;
+}
+
+/* Status Colors */
+.pending {
+  color: #ff9800;
+}
+
+.confirmed {
+  color: #2e86c1;
+}
+
+.shipped {
+  color: #388e3c;
+}
+
+/* No Orders Message */
+.no-orders-message {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* Adjust padding for table cells */
+  .orders-table th, .orders-table td {
+    padding: 12px;
+  }
+
+  /* Reduce font size of header */
+  .header {
+    font-size: 22px;
+  }
+
+  /* Modify layout for search box and buttons in smaller screens */
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+  }
+
+  .action-container {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Adjust table font size for smaller screens */
+  .orders-table {
+    font-size: 12px;
+  }
+
+  /* Adjust button padding and font size for smaller screens */
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

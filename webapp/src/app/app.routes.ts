@@ -18,6 +18,13 @@ import { UserAdminFormComponent } from './components/manage/user-admin-form/user
 import { AdminUpdateComponent } from './components/manage/admin-update/admin-update.component';
 import { ClientsComponent } from './components/manage/clients/clients.component';
 import { EditProfileComponent } from './components/manage/edit-profile/edit-profile.component';
+import { ProductDetailsComponent } from './components/clients/product-details/product-details.component';
+import { CartComponent } from './components/clients/cart/cart.component';
+import { OrderConfirmationComponent } from './components/clients/order-confirmation/order-confirmation.component';
+import { OrdersComponent } from './components/manage/orders/orders.component';
+import { ConfirmedOrdersComponent } from './components/manage/confirmed-orders/confirmed-orders.component';
+import { CreateOrderComponent } from './components/manage/create-order/create-order.component';
+import { SearchResultsComponent } from './components/clients/search-results/search-results.component';
 
 export const routes: Routes = [
   // Client Routes
@@ -27,7 +34,12 @@ export const routes: Routes = [
     canActivate: [authGuard], // Protect client routes
     children: [
       { path: '', component: HomeComponent },
-      // Additional client routes can be added here
+      {path: 'product-details/:id',  component: ProductDetailsComponent },
+      { path: 'cart/:userId', component: CartComponent },
+      { path: 'order-confirmation/:id', component: OrderConfirmationComponent },
+      { path: 'search-result', component: SearchResultsComponent },
+
+
     ],
   },
 
@@ -53,6 +65,10 @@ export const routes: Routes = [
       { path: 'admin-users/:id', component: AdminUpdateComponent },
       { path: 'admin-clients', component: ClientsComponent },
       { path: 'profile', component: EditProfileComponent },
+      { path: 'orders', component: OrdersComponent },
+      { path: 'confirmed-orders', component: ConfirmedOrdersComponent},
+      { path: 'create-order', component: CreateOrderComponent},
+
     ],
   },
 

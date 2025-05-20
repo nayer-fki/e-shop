@@ -1,27 +1,54 @@
 <header class="header">
   <div class="top-bar">
+    <!-- Navigation Links -->
     <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/shop">Shop</a>
-      <a href="/blog">Blog</a>
-      <a href="/vendors">Vendors</a>
-      <a href="/pages">Pages</a>
+      <a routerLink="/">Home</a>
+      <a routerLink="/shop">Shop</a>
+      <a routerLink="/blog">Blog</a>
+      <a routerLink="/vendors">Vendors</a>
+      <a routerLink="/pages">Pages</a>
     </nav>
+
+    <!-- Search Bar -->
     <div class="search-bar">
-      <select>
+      <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
         <option value="all">All Categories</option>
-        <option value="furniture">Furniture</option>
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
+        <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
       </select>
-      <input type="text" placeholder="Search for products..." />
-      <button>Search</button>
+      <input
+        type="text"
+        placeholder="Search for products..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+      />
+      <button (click)="onSearch()">Search</button>
+      <div class="suggestions" *ngIf="searchSuggestions.length > 0">
+        <ul>
+          <li *ngFor="let suggestion of searchSuggestions" (click)="onSuggestionClick(suggestion)">
+            {{ suggestion }}
+          </li>
+        </ul>
+      </div>
     </div>
+
+    <!-- User Icons -->
     <div class="user-icons">
-      <a href="/login">
+      <a *ngIf="!isLoggedIn" routerLink="/login">
         <i class="icon-login"></i> Login
       </a>
-      <a href="/cart">
+      <div *ngIf="isLoggedIn" class="user-profile">
+        <span>Hello, {{ userName }}</span>
+        <a (click)="toggleProfileDropdown()">
+          <i class="icon-user"></i> Profile
+        </a>
+        <div *ngIf="profileDropdownVisible" class="profile-dropdown">
+          <a routerLink="/profile">My Profile</a>
+          <a routerLink="/orders">My Orders</a>
+          <a (click)="confirmLogout()">Log Out</a>
+        </div>
+      </div>
+      <!-- Cart Link Updated to Include User ID -->
+      <a [routerLink]="['/cart', userId]" *ngIf="isLoggedIn">
         <i class="icon-cart"></i> Cart
       </a>
     </div>

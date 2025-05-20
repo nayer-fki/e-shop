@@ -1,0 +1,39 @@
+<div class="search-results">
+  <!-- Title -->
+  <h2 class="title">Search Results</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <!-- No Results Message -->
+  <div *ngIf="!loading && noResults" class="no-results">
+    <p>No products found in this category. You will be redirected to the homepage.</p>
+  </div>
+
+  <!-- Products Grid -->
+  <div *ngIf="!loading && products && products.length > 0" class="product-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <div class="product-image">
+        <img [src]="product.images[0] || 'assets/default-image.png'" alt="{{ product.name }}" />
+      </div>
+
+      <div class="product-details">
+        <h3 class="product-title">{{ product.name }}</h3>
+        <p *ngIf="product.category" class="product-category">Category: {{ product.category }}</p>
+        <p class="product-price">$ {{ product.price | number: '1.2-2' }}</p>
+      </div>
+
+      <div class="product-actions">
+        <button (click)="addToCart(product)" class="btn btn-add-to-cart">
+          Add to Cart
+        </button> 
+        <button (click)="viewDetails(product)" class="btn btn-view-details">
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

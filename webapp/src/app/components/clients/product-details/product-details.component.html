@@ -1,0 +1,52 @@
+<div *ngIf="product; else loading">
+  <div class="product-details-container">
+    <!-- Product Header -->
+    <div class="product-header">
+      <h1 class="product-name">{{ product.name }}</h1>
+      <img *ngIf="product.images && product.images.length > 0"
+           [src]="product.images[0]"
+           alt="Image of {{ product.name }}"
+           class="product-image"/>
+    </div>
+
+    <!-- Product Body -->
+    <div class="product-body">
+      <p class="price"><strong>Price:</strong> ${{ product.price }}</p>
+      <p class="description"><strong>Description:</strong> {{ product.description }}</p>
+    </div>
+
+    <!-- Rating Section -->
+    <div class="rating-section">
+      <h3>Rate This Product</h3>
+      <div class="stars" (mouseleave)="resetHover()">
+        <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+              [class.active]="hoveredRating >= star || currentRating >= star"
+              class="star"
+              (mouseover)="hoverRating(star)"
+              (click)="submitRating(star)">
+          &#9733;
+        </span>
+      </div>
+      <p *ngIf="currentRating">You rated: {{ currentRating }} out of 5</p>
+    </div>
+
+    <!-- Comment Section -->
+    <div class="comment-section">
+      <h3>Leave a Comment</h3>
+      <textarea [(ngModel)]="comment" placeholder="Write your comment..."></textarea>
+      <button class="btn btn-primary" (click)="submitComment()" [disabled]="!comment.trim()">Submit</button>
+    </div>
+
+    <!-- Display Comments -->
+    <div class="comments-list" *ngIf="comments.length > 0">
+      <h3>Comments</h3>
+      <div *ngFor="let c of comments" class="comment-item">
+        <p><strong>{{ c.userName }}:</strong> {{ c.text }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="loading">Loading product details...</p>
+</ng-template>

@@ -3,8 +3,8 @@
   <div class="search-container">
     <input
       type="text"
-      [(ngModel)]="searchQuery" 
-      (keyup)="onSearch()" 
+      [(ngModel)]="searchQuery"
+      (keyup)="onSearch()"
       placeholder="Search anything here..."
       class="search-input"
       aria-label="Search bar"
@@ -26,6 +26,16 @@
     No results found for "{{ searchQuery }}"
   </div>
 
+  <!-- Loading Spinner -->
+  <div *ngIf="searchLoading" class="loading-spinner">
+    <i class="fa fa-spinner fa-spin"></i> Loading...
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
   <!-- Right Section (Profile and Notifications) -->
   <div class="navbar-right">
     <button class="icon-btn filter-btn" aria-label="Notification">
@@ -38,7 +48,7 @@
         class="profile-img"
         aria-label="User profile picture"
       />
-      <span class="profile-name">{{ user.name }}</span>
+      <span class="profile-name">{{ user.name || 'Guest' }}</span> <!-- Display user name -->
     </div>
   </div>
 </div>

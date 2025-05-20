@@ -1,1 +1,49 @@
-<p>home works!</p>
+<main class="home-main">
+  <!-- Hero Section with Video Background -->
+  <section class="hero-section" [@fadeIn]>
+    <div class="video-container">
+      <!-- YouTube iframe Embed -->
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wf4F2-9UXUo?autoplay=1&mute=1&loop=1&playlist=wf4F2-9UXUo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div class="video-overlay">
+        <h1 class="animated-text">Welcome to Our Store</h1>
+        <p class="animated-text">Explore the best deals on the latest products</p>
+        <a class="cta-button animated-text" routerLink="/shop">Shop Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Categories Section -->
+  <section class="categories" [@fadeIn]>
+    <h2>Browse by Categories</h2>
+    <div class="category-list">
+      <div class="category-card" *ngFor="let category of categories" [@fadeIn]>
+        <h3>{{ category.name }}</h3>
+        <a [routerLink]="['/search-result']" [queryParams]="{ category: category.name }" class="view-category">
+          View Category
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="featured-products" [@fadeIn]>
+    <h2>Featured Products</h2>
+    <div class="product-grid">
+      <div class="product-card" *ngFor="let product of products" [@fadeIn]>
+        <img [src]="product.images[0]" alt="{{ product.name }}" />
+        <h3>{{ product.name }}</h3>
+        <div class="product-rating">
+          <span *ngFor="let star of [].constructor(5); let i = index" [class.filled]="i < product.rating">★</span>
+          <span class="review-count">({{ product.reviews }} reviews)</span>
+        </div>
+        <p>{{ product.shortDescription }}</p>
+        <div class="product-price">
+          <span class="discount-price" *ngIf="product.discountPrice">{{ product.discountPrice | currency }}</span>
+          <span class="regular-price">{{ product.price | currency }}</span>
+        </div>
+        <button class="add-to-cart" (click)="addToCart(product)">Add to Cart</button>
+        <a [routerLink]="['/product-details', product._id]" class="view-details" (click)="logProductId(product.id)">View Details</a>
+      </div>
+    </div>
+  </section>
+</main>

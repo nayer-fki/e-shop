@@ -3,8 +3,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../db/user"); // Import User model
 const { jwtSecret, jwtExpiry } = require("../config/jwtConfig");
 
-// Blacklist for logout tokens
-const tokenBlacklist = new Set();
+// In-memory session storage (for development purposes only)
+const sessionStore = new Map(); // Store token information per user
 
 // Login Function
 async function login(req, res) {
@@ -27,6 +27,9 @@ async function login(req, res) {
             { expiresIn: jwtExpiry }
         );
 
+        // Store the token in the sessionStore against the user's ID
+        sessionStore.set(user._id.toString(), token);
+
         res.status(200).send({
             message: "Login successful.",
             token,
@@ -46,11 +49,10 @@ function logout(req, res) {
         return res.status(400).send({ message: "Token is missing." });
     }
 
-    if (tokenBlacklist.has(token)) {
-        return res.status(400).send({ message: "Token has already been logged out." });
-    }
+    // Invalidate the token by removing it from sessionStore
+    const decoded = jwt.verify(token, jwtSecret);
+    sessionStore.delete(decoded.id.toString());
 
-    tokenBlacklist.add(token);
     return res.status(200).send({ message: "Logout successful." });
 }
 
@@ -81,6 +83,9 @@ async function register(req, res) {
             jwtSecret,
             { expiresIn: jwtExpiry }
         );
+
+        // Store the token in the sessionStore against the user's ID
+        sessionStore.set(user._id.toString(), token);
 
         res.status(201).send({
             message: "Registration successful.",

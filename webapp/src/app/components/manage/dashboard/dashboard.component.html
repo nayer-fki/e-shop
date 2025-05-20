@@ -1,8 +1,33 @@
-<div class="dashboard">
+<div class="dashboard-container">
+  <!-- Welcome Section -->
+  <div class="welcome-section" [@bounce]="bounceState">
     <h1>{{ welcomeMessage }}</h1>
-    <div class="dashboard-content">
-      <p>Here you can manage your site content, view analytics, and perform administrative tasks.</p>
-      <!-- Add other components or information related to the dashboard -->
+  </div>
+
+  <!-- Overview Cards with Animation -->
+  <div class="overview-cards">
+    <div class="card" *ngFor="let card of overviewCards" [@rotateCard]="bounceState">
+      <h3>{{ card.title }}</h3>
+      <p>{{ card.value }}</p>
     </div>
   </div>
-      
+
+  <!-- Data Table Section -->
+  <div *ngIf="isShowTable" class="table-section" [@scrollIn]="'visible'">
+    <h2>Recent Orders</h2>
+    <app-order-table></app-order-table>
+  </div>
+
+  <!-- Analytics Section with Charts -->
+  <div *ngIf="isShowCharts" class="charts-section" [@scrollIn]="'visible'">
+    <h2>Analytics</h2>
+    <div class="chart-container">
+      <div class="chart">
+        <ngx-charts-line-chart [results]="salesData" [scheme]="colorScheme"></ngx-charts-line-chart>
+      </div>
+      <div class="chart">
+        <ngx-charts-bar-vertical [results]="revenueData" [scheme]="colorScheme"></ngx-charts-bar-vertical>
+      </div>
+    </div>
+  </div>
+</div>

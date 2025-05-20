@@ -7,80 +7,88 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   user: any = { name: '', profileImage: '' };
   isLoading: boolean = true;
-  searchLoading: boolean = false; // Added loading state for search
+  searchLoading: boolean = false;
   errorMessage: string = '';
-  searchQuery: string = ''; // Holds the search input
-  searchResults: any[] = []; // Stores the search results
+  searchQuery: string = '';
+  searchResults: any[] = [];
+  isAuthenticated: boolean = false;
 
   constructor(
-    private authService: AuthService, 
-    private userService: UserService, 
+    private authService: AuthService,
+    private userService: UserService,
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        this.user = JSON.parse(storedUser).user || {};
-        this.isLoading = false;
-      } catch (error) {
-        console.error('Error parsing user data from localStorage:', error);
-        this.isLoading = false;
-      }
-    } else {
+    this.isAuthenticated = this.authService.isAuthenticated();
+    if (this.isAuthenticated) {
       this.fetchUserData();
+    } else {
+      this.isLoading = false;
     }
   }
 
   private fetchUserData(): void {
-    this.authService.getUserInfo().subscribe(
-      (response: any) => {
-        this.user = response.user || {};
-        localStorage.setItem('user', JSON.stringify(response));
-        this.isLoading = false;
-      },
-      (error) => {
-        this.errorMessage = 'Failed to load user data';
-        console.error('Error fetching user data:', error);
-        this.isLoading = false;
-      }
-    );
+    const storedUser = this.authService.getUserInfoFromStorage();
+    if (storedUser) {
+      this.user = storedUser;
+      this.isLoading = false;
+      console.log('User data from localStorage:', this.user);
+    } else if (this.authService.isAuthenticated()) {
+      this.authService.getUserInfo(this.user.email).subscribe(
+        (response: any) => {
+          this.user = response;
+          this.isLoading = false;
+          console.log('Fetched user data:', this.user);
+        },
+        (error) => {
+          this.errorMessage = 'Failed to load user data';
+          console.error('Error fetching user data:', error);
+          this.isLoading = false;
+        }
+      );
+    }
   }
 
   onSearch(): void {
-    console.log('Search query:', this.searchQuery); // Debug log
+    console.log('Search query:', this.searchQuery);
     if (this.searchQuery.trim()) {
-      this.searchLoading = true; // Show loading indicator for search
+      this.searchLoading = true;
       this.userService.searchUsers(this.searchQuery).subscribe(
         (results: any[]) => {
           this.searchResults = results;
           console.log('Search results:', this.searchResults);
-          this.searchLoading = false; // Hide loading indicator
-          this.cdRef.detectChanges(); // Manually trigger change detection
+          this.searchLoading = false;
+          this.cdRef.detectChanges();
         },
         (error) => {
           console.error('Search error:', error);
           this.errorMessage = 'Error fetching search results';
-          this.searchLoading = false; // Hide loading indicator
+          this.searchLoading = false;
         }
       );
     } else {
-      this.searchResults = []; // Clear results when search input is empty
+      this.searchResults = [];
       console.log('Search cleared');
-      this.searchLoading = false; // Hide loading indicator
-      this.cdRef.detectChanges(); // Manually trigger change detection
+      this.searchLoading = false;
+      this.cdRef.detectChanges();
     }
   }
 
   selectResult(result: any): void {
-    console.log('Selected result:', result); // Handle the result selection here
+    console.log('Selected result:', result);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.isAuthenticated = false;
+    this.user = { name: '', profileImage: '' }; // Reset user data
   }
 }

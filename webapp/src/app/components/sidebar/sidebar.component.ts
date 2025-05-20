@@ -20,17 +20,13 @@ export class SidebarComponent {
    */
   logout(): void {
     const confirmLogout = window.confirm('Are you sure you want to log out?');
-    
+
     if (confirmLogout) {
-      this.authService.logout().subscribe({
-        next: () => {
-          // Redirect to login page after successful logout
-          this.router.navigate(['/admin/login']);
-        },
-        error: (err) => {
-          console.error('Logout failed', err); // Handle error if needed
-        }
-      });
+      // Call the logout method from AuthService
+      this.authService.logout();  // Simply call logout without passing 'user-email'
+
+      // Redirect to login page after logout
+      this.router.navigate(['/admin/login']);
     } else {
       console.log('Logout cancelled');
     }

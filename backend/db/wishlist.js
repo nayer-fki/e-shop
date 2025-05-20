@@ -1,8 +1,16 @@
 const mongoose=require("mongoose");
-const cartSchema=new mongoose.Schema({
-    userId:{ type: Schema.Types.ObjectId, ref: 'users' },
-    productsId: Array(String)
+const { Schema } = mongoose;
 
+
+const wishListSchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, // User reference
+    products: [
+        {
+            productId: { type: Schema.Types.ObjectId, ref: "Product", required: true }, // Product reference
+        },
+    ],
+    updatedAt: { type: Date, default: Date.now }, // Last updated date
 });
-const Cart=mongoose.model("carts",cartSchema);
-module.exports  = Cart;
+
+const WishList = mongoose.model("WishList", wishListSchema);
+module.exports = WishList;

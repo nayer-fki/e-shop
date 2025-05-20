@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router,ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from '../services/auth/auth.service'; // Adjust the path as per your project structure
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
@@ -11,19 +12,17 @@ export class AdminGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
-    // Check if user is authenticated (has a token)
-    const isAuthenticated = this.authService.isAuthenticated();
-    const isAdmin = this.authService.isAdmin();
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    // Get user information from local storage
+    const user = this.authService.getUserInfoFromStorage();
 
-    if (isAuthenticated && isAdmin) {
-      return true; // Allow access to admin routes
+    // If user is not authenticated or not an admin, redirect to login
+    if (!user || !user.isAdmin) {
+      this.router.navigate(['/admin/login']); // Redirect to admin login if user is not admin
+      return false;
     }
 
-    // If not authenticated, redirect to login
-    this.router.navigate(['/admin/login'], {
-      queryParams: { returnUrl: state.url }, // Save the return URL for post-login redirection
-    });
-    return false;
+    // Allow access if the user is an admin
+    return true;
   }
 }

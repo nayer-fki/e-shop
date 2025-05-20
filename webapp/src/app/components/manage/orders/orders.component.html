@@ -1,0 +1,64 @@
+<div class="orders-container">
+  <h2 class="header">Pending Orders</h2>
+
+  <!-- Search Box -->
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search orders by user or status" class="search-box" />
+  </div>
+
+  <div class="action-container">
+    <button (click)="createNewOrder()" class="btn btn-action">Create New Order</button>
+    <!-- Added new button to go to confirmed orders -->
+    <button (click)="goToConfirmedOrders()" class="btn btn-confirm">Go to Confirmed Orders</button>
+  </div>
+
+  <!-- Orders Table -->
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Client</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        <th>Order Date</th>
+        <th>Total Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of filteredOrders">
+        <td>{{ order._id || 'N/A' }}</td>
+        <td>{{ order.userName || 'Unknown User' }}</td>
+        <td>
+          <div *ngFor="let product of order.products">
+            <p>{{ product.name || 'Unknown Product' }}</p>
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let product of order.products">
+            <p>{{ product.quantity || 0 }}</p>
+          </div>
+        </td>
+        <td>
+          <span [ngClass]="{
+            'pending': order.status === 'pending',
+            'confirmed': order.status === 'confirmed',
+            'shipped': order.status === 'shipped'
+          }">
+            {{ order.status }}
+          </span>
+        </td>
+        <td>{{ order.orderDate | date: 'short' }}</td>
+        <td>${{ order.totalPrice || 0 }}</td>
+        <td>
+          <button *ngIf="order._id" (click)="updateOrderStatus(order._id, 'confirmed')" class="btn btn-confirm">Confirm</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="filteredOrders.length === 0" class="no-orders-message">
+    <p>No orders found</p>
+  </div>
+</div>

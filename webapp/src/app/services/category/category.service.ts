@@ -14,8 +14,8 @@ export class CategoryService {
     return this.http.get<Category[]>("http://localhost:3000/category");
   }
 
-  getCategoryById(id:string){
-    return this.http.get<Category[]>("http://localhost:3000/category/"+id);
+  getCategoryById(id: string) {
+    return this.http.get<Category>(`http://localhost:3000/category/${id}`);
   }
 
   addcategory(name:string){
@@ -32,7 +32,7 @@ export class CategoryService {
   deleteCategoryById(id:string){
     return this.http.delete("http://localhost:3000/category/"+id);
   }
-  
+
 
 
 }

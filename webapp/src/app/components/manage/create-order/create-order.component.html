@@ -1,0 +1,56 @@
+<div class="create-order-container">
+  <h2>Create New Order</h2>
+
+  <form (ngSubmit)="createOrder()">
+    <!-- User Name Input -->
+    <div class="form-group">
+      <label for="userName">User Name</label>
+      <select id="userName" [(ngModel)]="newOrder.userId" name="userId" required class="input-field">
+        <option value="">Select User</option>
+        <option *ngFor="let user of userOptions" [value]="user._id">{{ user.name }}</option>
+      </select>
+    </div>
+
+    <!-- Product Selection with Search -->
+    <div class="form-group">
+      <label>Select Products</label>
+
+      <div class="search-bar">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filteredProducts()" placeholder="Search for products..." class="input-field"/>
+      </div>
+
+      <div class="product-selection">
+        <div *ngFor="let product of filteredProducts()" class="product-card">
+          <div class="product-card-content">
+            <h4>{{ product.name }}</h4>
+            <p>${{ product.price }}</p>
+          </div>
+          <button class="add-btn" type="button" (click)="addProduct(product)">
+            Add to Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selected Products List -->
+    <div class="products-list">
+      <h4>Selected Products</h4>
+      <ul>
+        <li *ngFor="let product of newOrder.products; let i = index" class="product-item">
+          <div>
+            <p>{{ product.name }} - ${{ product.price }} (Qty: {{ product.quantity }})</p>
+          </div>
+          <button class="remove-btn" type="button" (click)="removeProduct(i)">Remove</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group total-price">
+      <label>Total Price: <span class="price">${{ newOrder.totalPrice.toFixed(2) }}</span></label>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" [disabled]="!newOrder.userId || !newOrder.products.length" class="submit-btn">Create Order</button>
+    </div>
+  </form>
+</div>

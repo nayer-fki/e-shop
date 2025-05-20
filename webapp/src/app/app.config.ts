@@ -24,17 +24,29 @@ import { AdminUpdateComponent } from './components/manage/admin-update/admin-upd
 import { ClientsComponent } from './components/manage/clients/clients.component';
 import { DashboardComponent } from './components/manage/dashboard/dashboard.component';
 import { EditProfileComponent } from './components/manage/edit-profile/edit-profile.component';
-
+import { LoginRegisterClientsComponent } from './login-register-clients/login-register-clients.component';
+import { ProductDetailsComponent } from './components/clients/product-details/product-details.component';
+import { CartComponent } from './components/clients/cart/cart.component';
+import { OrderConfirmationComponent } from './components/clients/order-confirmation/order-confirmation.component';
+import { OrdersComponent } from './components/manage/orders/orders.component';
+import { ConfirmedOrdersComponent } from './components/manage/confirmed-orders/confirmed-orders.component';
+import { CreateOrderComponent } from './components/manage/create-order/create-order.component';
+import { SearchResultsComponent } from './components/clients/search-results/search-results.component';
 // Define routes
 export const routes: Routes = [
   {
     path: '',
     component: ClientLayoutComponent,
     children: [
-      { path: '', component: HomeComponent }
+      { path: '', component: HomeComponent },
+            {path: 'product-details/:id',  component: ProductDetailsComponent },
+            { path: 'cart/:userId', component: CartComponent },
+            { path: 'order-confirmation/:id', component: OrderConfirmationComponent },
+            { path: 'search-result', component: SearchResultsComponent},
+
     ]
   },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginRegisterClientsComponent },
   { path: 'admin/login', component: LoginComponent },
 
   // Admin routes
@@ -59,6 +71,9 @@ export const routes: Routes = [
     { path: 'admin-users/:id', component: AdminUpdateComponent },
     { path: 'admin-clients', component: ClientsComponent },
     { path: 'profile', component: EditProfileComponent },
+    { path: 'orders', component: OrdersComponent },
+    { path: 'confirmed-orders', component: ConfirmedOrdersComponent},
+          { path: 'create-order', component: CreateOrderComponent},
   ],
 }
 ];

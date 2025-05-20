@@ -1,0 +1,46 @@
+<div class="cart-container">
+  <h2>Your Cart</h2>
+
+  <!-- Display a message when the cart is empty -->
+  <div *ngIf="cart.length === 0">
+    <p>Your cart is empty. Please add products.</p>
+  </div>
+
+  <!-- Display the cart items when there are products in the cart -->
+  <div *ngIf="cart.length > 0">
+    <ul>
+      <li *ngFor="let item of cart">
+        <div class="product-details">
+          <!-- Check for product image -->
+          <img [src]="item.product?.images[0] ? item.product?.images[0] : 'default-image.jpg'" alt="Product Image" width="50" height="50">
+
+          <div class="product-info">
+            <!-- Display product name -->
+            <h4>{{ item.product?.name || 'No Name Available' }}</h4>
+
+            <!-- Display price -->
+            <p>Price: {{ item.product?.price?.$numberDecimal | currency }}</p>
+
+            <!-- Handle product quantity adjustments -->
+            <div class="quantity-container">
+              <label for="quantity-{{ item.product?._id }}">Quantity:</label>
+              <input type="number" [(ngModel)]="item.quantity" [id]="'quantity-' + item.product?._id" min="1" class="quantity-input">
+            </div>
+
+            <!-- Remove button -->
+            <button (click)="removeFromCart(item.product?._id)">Remove</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+   <!-- Cart Summary displaying the total price -->
+<div class="cart-summary">
+  <p><strong>Total Price: </strong>{{ total | currency }}</p>
+  <button (click)="checkout()">Proceed to Checkout</button>
+</div>
+
+
+
+  </div>
+</div>

@@ -1,6 +1,8 @@
 const Product = require("./../db/product"); // Import Product model
 const Category = require("./../db/category"); // Import Category model
 const mongoose = require("mongoose"); // Mongoose
+const Comment = require("./../db/Comment"); // Import Comment model
+const Rating = require("./../db/Rating");   // Import Rating model
 
 // Helper function for price validation
 function validatePrice(price) {
@@ -79,6 +81,35 @@ async function getProducts() {
         throw new Error("Error fetching products");
     }
 }
+
+
+// Get products by category ID
+async function getProductsByCategoryId(categoryId) {
+    try {
+        // Validate the category ID format
+        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+            throw new Error("Invalid category ID format.");
+        }
+
+        // Find products by categoryId and populate category information
+        const products = await Product.find({ categoryId })
+                                      .populate("categoryId"); // Populate category for better information
+
+        if (products.length === 0) {
+            throw new Error("No products found in this category.");
+        }
+
+        // Return products with price as a string for easier display
+        return products.map((p) => ({
+            ...p.toObject(),
+            price: p.price.toString(),
+        }));
+    } catch (err) {
+        console.error(`Error fetching products by category ID: ${err.message}`);
+        throw new Error(err.message);
+    }
+}
+
 
 // Update an existing product
 
@@ -181,5 +212,124 @@ async function getProductById(id) {
     }
 }
 
+// Add a new comment
+async function addComment(model) {
+    try {
+        // Validate the product ID format
+        if (!mongoose.Types.ObjectId.isValid(model.productId)) {
+            throw new Error("Invalid product ID format.");
+        }
+
+        // Validate required fields
+        if (!model.userName || !model.comment || !model.userId) {
+            throw new Error("userName, comment, and userId are required.");
+        }
+
+        // Trim any spaces from the userName and comment to clean up input
+        const cleanUserName = model.userName.trim();
+        const cleanComment = model.comment.trim();
+
+        if (!cleanUserName || !cleanComment) {
+            throw new Error("userName and comment should not be empty after trimming.");
+        }
+
+        // Create a new comment
+        const newComment = new Comment({
+            productId: model.productId,
+            userId: model.userId, // You must save the user ID if it's part of the data model
+            userName: cleanUserName,
+            comment: cleanComment,
+        });
+
+        // Save the comment
+        await newComment.save();
+        return newComment;
+    } catch (err) {
+        console.error("Error creating comment:", err);
+        throw new Error(`Error creating comment: ${err.message}`);
+    }
+}
+
+// Add a new rating
+async function addRating(model) {
+    try {
+        // Validate the product ID format
+        if (!mongoose.Types.ObjectId.isValid(model.productId)) {
+            throw new Error("Invalid product ID format.");
+        }
+
+        // Validate required fields
+        if (!model.userName || model.rating === undefined || !model.userId) {
+            throw new Error("userName, rating, and userId are required.");
+        }
+
+        // Validate rating value
+        if (model.rating < 1 || model.rating > 5) {
+            throw new Error("Rating must be between 1 and 5.");
+        }
+
+        // Trim userName to clean up input
+        const cleanUserName = model.userName.trim();
+
+        if (!cleanUserName) {
+            throw new Error("userName cannot be empty.");
+        }
+
+        // Create a new rating
+        const newRating = new Rating({
+            productId: model.productId,
+            userId: model.userId, // Save the userId along with the rating
+            userName: cleanUserName,
+            rating: model.rating,
+        });
+
+        // Save the rating
+        await newRating.save();
+        return newRating;
+    } catch (err) {
+        console.error("Error creating rating:", err);
+        throw new Error(`Error creating rating: ${err.message}`);
+    }
+}
+
+
+// Get all comments for a product
+async function getCommentsForProduct(productId) {
+    try {
+        // Validate the product ID format
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            throw new Error("Invalid product ID format.");
+        }
+
+        // Fetch comments for the product
+        const comments = await Comment.find({ productId }).sort({ createdAt: -1 });
+
+        // Return all comments
+        return comments;
+    } catch (err) {
+        console.error("Error fetching comments:", err);
+        throw new Error(`Error fetching comments: ${err.message}`);
+    }
+}
+
+// Get all ratings for a product
+async function getRatingsForProduct(productId) {
+    try {
+        // Validate the product ID format
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            throw new Error("Invalid product ID format.");
+        }
+
+        // Fetch ratings for the product
+        const ratings = await Rating.find({ productId });
+
+        // Return all ratings
+        return ratings;
+    } catch (err) {
+        console.error("Error fetching ratings:", err);
+        throw new Error(`Error fetching ratings: ${err.message}`);
+    }
+}
+
 // Export all functions
-module.exports = { addProduct, updateProduct, deleteProduct, getProducts, getProductById };
+module.exports = { addProduct, updateProduct, deleteProduct, getProducts, getProductById,getProductsByCategoryId,addComment,addRating,getCommentsForProduct,getRatingsForProduct };

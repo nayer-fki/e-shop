@@ -1,5 +1,5 @@
 export interface Product {
-  id?: string; // Optional because the ID might not exist initially
+  _id?: string; // Optional because the ID might not exist initially
   name: string;
   shortDescription?: string; // Optional field
   description?: string; // Optional field

@@ -3,27 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Product {
-  id?: string; // Optional, as it's generated on the server
+  id?: string;
   name: string;
   price: number;
-  categoryId: string; // Category is required
-  images?: string[]; // Optional, as not every product may have images
-  shortDescription?: string; // Optional description field
-  description?: string; // Optional description field
-  discount?: number; // Optional discount field
+  categoryId: string; // This is linked with categoryId
+  images?: string[];
+  shortDescription?: string;
+  description?: string;
+  discount?: number;
 }
 
 export interface Category {
-  id: string; // Assuming this is the ID for the category
-  name: string; // Name of the category
+  id: string;
+  name: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private readonly apiUrl = 'http://localhost:3000/product'; // API URL for products
-  private readonly categoryUrl = 'http://localhost:3000/category'; // API URL for categories
+  private readonly apiUrl = 'http://localhost:3000/product';
+  private readonly categoryUrl = 'http://localhost:3000/category';
 
   constructor(private http: HttpClient) {}
 
@@ -32,9 +32,31 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
+  // Get all products by categoryId
+  getProductsByCategoryId(categoryId: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/category/${categoryId}`);
+}
+
+
   // Get all categories
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(this.categoryUrl);
+  }
+
+  getCommentsByProductId(productId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${productId}/comments`);
+  }
+
+  submitProductComment(productId: string, comment: { userName: string; text: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${productId}/comment`, comment);
+  }
+
+  submitProductRating(productId: string, ratingPayload: { userId: string, userName: string, rating: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${productId}/rating`, ratingPayload);
+  }
+
+  getRatingByProductId(productId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${productId}/comments`);
   }
 
   // Get a product by its ID
@@ -49,19 +71,7 @@ export class ProductService {
 
   // Update an existing product
   updateProduct(id: string, product: Product): Observable<Product> {
-    // Make sure to exclude fields that should not be updated if they are undefined
-    const updatedProduct: Product = {
-      name: product.name,
-      price: product.price,
-      categoryId: product.categoryId,
-      images: product.images || [],
-      shortDescription: product.shortDescription,
-      description: product.description,
-      discount: product.discount,
-    };
-
-    // Send the updated product details
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, updatedProduct);
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
   }
 
   // Delete a product by its ID
