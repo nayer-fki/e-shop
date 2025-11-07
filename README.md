@@ -61,7 +61,7 @@ Ajoutez un `Dockerfile` pour le backend et le frontend, puis configurez `docker-
 
 **Nayer Fki**  
 Étudiant en informatique – spécialité **Développement Web et Cybersécurité**  
-📧 Contact : [ton.email@example.com]  
+📧 Contact : [nayerfki5@gmail.com]  
 🔗 [LinkedIn](https://linkedin.com/in/ton-profil) | [GitHub](https://github.com/nayer-fki)
 
 ---
